@@ -84,8 +84,12 @@ describe('LiveBridge', () => {
   });
 
   it('marks a timed-out write outcome as unknown instead of inviting a retry', async () => {
-    const instance = bridge(200);
-    await expect(instance.call('status', { delay: 500 })).rejects.toThrow(
+    // The timeout has to be generous enough that the *recovery* call below fits inside
+    // it on a slow machine, because a timed-out call tears the helper down and the next
+    // one pays to start it again. At 200ms this passed here and failed on a CI runner,
+    // where the same work took sixteen times longer.
+    const instance = bridge(1_500);
+    await expect(instance.call('status', { delay: 6_000 })).rejects.toThrow(
       /outcome is unknown, so do not retry/i,
     );
     await expect(instance.call('status').then((r) => r.value)).resolves.toEqual(

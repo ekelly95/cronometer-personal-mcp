@@ -133,7 +133,11 @@ async function connectStdio(mode: 'legacy' | 'modern'): Promise<Client> {
       ...getDefaultEnvironment(),
       CRONOMETER_TIMEZONE: TEST_CONFIGURATION.timeZone,
     },
-    stderr: 'pipe',
+    // Inherited, not piped. Piping it sent the spawned server's own diagnostics
+    // nowhere, so when this failed on a CI runner the only evidence was the client's
+    // guess about what went wrong. The server redacts secrets before anything reaches
+    // stderr, so passing it through costs nothing and is usually silent.
+    stderr: 'inherit',
   });
   await client.connect(transport);
   connections.push({ client });
