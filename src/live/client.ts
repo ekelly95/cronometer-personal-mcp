@@ -143,7 +143,8 @@ function isReply(value: unknown): value is BridgeReply {
 
 export class LiveBridge {
   readonly #projectRoot: string;
-  readonly #command: string;
+  readonly #configuredCommand: string | undefined;
+  #resolvedCommand: string | undefined;
   readonly #args: readonly string[];
   readonly #environment: NodeJS.ProcessEnv;
   readonly #timeoutMs: number;
@@ -159,7 +160,13 @@ export class LiveBridge {
 
   public constructor(options: LiveBridgeOptions = {}) {
     this.#projectRoot = resolve(options.projectRoot ?? DEFAULT_PROJECT_ROOT);
-    this.#command = options.command ?? interpreter(this.#projectRoot);
+    // Deliberately NOT resolved here. Doing so meant a checkout without the Python
+    // environment could not start the server at all: `initialize` answered "Internal
+    // server error" and said nothing more, which is every fresh clone. Listing tools,
+    // reading a downloaded export and asking for status need no interpreter, so the
+    // absence of one should only be an error when something actually needs it — and
+    // then it names the fix.
+    this.#configuredCommand = options.command;
     this.#args = options.args ?? [resolve(this.#projectRoot, 'python', 'live_bridge.py')];
     this.#environment = childEnvironment(options.environment ?? process.env);
     this.#timeoutMs = options.timeoutMs ?? 60_000;
@@ -229,7 +236,8 @@ export class LiveBridge {
     if (this.#child !== undefined) return this.#child;
 
     this.#stdoutBuffer = '';
-    const child = spawn(this.#command, [...this.#args], {
+    this.#resolvedCommand ??= this.#configuredCommand ?? interpreter(this.#projectRoot);
+    const child = spawn(this.#resolvedCommand, [...this.#args], {
       cwd: this.#projectRoot,
       env: this.#environment,
       stdio: 'pipe',

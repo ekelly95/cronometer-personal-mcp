@@ -224,6 +224,26 @@ describe('LiveBridge', () => {
     expect(message.split('\n')).toHaveLength(1);
   });
 
+  it('can be constructed without a Python environment, and only complains when used', async () => {
+    // The bug this pins: the interpreter was resolved in the constructor, so a
+    // checkout with no .venv-live could not start the server at all. `initialize`
+    // came back "Internal server error" and nothing else — the state of every fresh
+    // clone, and of CI, where it went unnoticed until Actions could run.
+    const withoutEnvironment = new LiveBridge({
+      projectRoot: resolve(ROOT, 'no-such-project-root'),
+      environment: {},
+      timeoutMs: 500,
+      minimumIntervalMs: 0,
+    });
+    bridges.push(withoutEnvironment);
+
+    // Constructing it is what listing tools and reading a downloaded export need, and
+    // neither of those touches Python.
+    await expect(withoutEnvironment.call('status')).rejects.toThrow(
+      /live Python environment is missing/i,
+    );
+  });
+
   it('fails clearly when its executable cannot start', async () => {
     const instance = new LiveBridge({
       projectRoot: ROOT,
