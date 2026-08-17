@@ -270,9 +270,29 @@ describe('declarative MCP registry', () => {
 });
 
 describe('MCP protocol surface', () => {
+  /**
+   * "Internal server error" is all a JSON-RPC client is given when a handler throws,
+   * and the useful part is in `data`. These two tests fail on CI runners and pass
+   * here, so the message alone has already cost one round trip; this makes the next
+   * failure carry everything the process knew.
+   */
+  async function attempt<T>(step: string, work: () => Promise<T>): Promise<T> {
+    try {
+      return await work();
+    } catch (error) {
+      const own = error instanceof Error ? Object.getOwnPropertyNames(error) : [];
+      throw new Error(
+        `${step} failed: ${String((error as Error)?.message ?? error)}\n` +
+          `  platform: ${process.platform} node ${process.version}\n` +
+          `  full error: ${JSON.stringify(error, [...own, 'code', 'data'], 2)}`,
+        { cause: error },
+      );
+    }
+  }
+
   it.each(['legacy', 'modern'] as const)('lists every tool in the %s protocol era', async (mode) => {
-    const client = await connectStdio(mode);
-    const listed = await client.listTools();
+    const client = await attempt(`connect (${mode})`, () => connectStdio(mode));
+    const listed = await attempt(`listTools (${mode})`, () => client.listTools());
     expect(listed.tools).toHaveLength(LIVE_TOOL_REGISTRY.length);
     const firstInstructions = client.getInstructions()?.slice(0, 512);
     expect(firstInstructions).toContain('Never retry a timed-out write');
