@@ -230,7 +230,7 @@ All tests are offline and use synthetic data:
 npm run verify      # typecheck, TypeScript, Python, and the setup scripts
 ```
 
-That is 449 TypeScript tests, 45 Python and 24 setup checks. The individual steps are `npm run typecheck`, `npm test`, `npm run test:python` and `npm run test:setup`; the last skips itself loudly where PowerShell is absent, rather than failing for a reason unrelated to the code being checked.
+That is 450 TypeScript tests, 45 Python and 24 setup checks. The individual steps are `npm run typecheck`, `npm test`, `npm run test:python` and `npm run test:setup`; the last skips itself loudly where PowerShell is absent, rather than failing for a reason unrelated to the code being checked.
 
 `npm test` builds first and checks both legacy MCP and the modern `2026-07-28` stdio handshake. The protocol suite calls every tool against a fake bridge, verifies tool permission labels, checks that every destructive tool refuses an unconfirmed call, ensures read handlers cannot reach mutation methods, and drives hostile multi-line text through both the success and error paths to prove neither can forge the end of the untrusted-data boundary.
 
