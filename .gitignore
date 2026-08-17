@@ -1,0 +1,25 @@
+node_modules/
+dist/
+.venv-live/
+*.pyc
+__pycache__/
+
+# Working files for the AI assistants used to build this. They stay on the machine
+# and out of the repository: they are written *to* an assistant rather than to a
+# reader, and they carry personal framing that reads badly stripped of its context.
+# The engineering reasoning they hold is in BUILD_PLAN.md, DATA_MODEL.md and the
+# security audit, all of which are addressed to a person. Source comments and the
+# audit still cite them by name — see the note in README.md.
+AGENTS.md
+CLAUDE.md
+
+# A real Cronometer export must never enter this tree at all — not committed, not
+# ignored, not present. These two rules are a backstop against an accidental
+# `git add`, not permission to keep data here.
+*.pdf
+*.csv
+
+# The synthetic fixtures are the one place CSVs belong. The negation has to name
+# the files, not the directory: a `!test/fixtures/` line would only re-include the
+# directory entry, and every .csv inside it would still match the rule above.
+!test/fixtures/**/*.csv

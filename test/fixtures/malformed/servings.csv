@@ -1,0 +1,22 @@
+Day,Time,Group,Food Name,Amount,Category
+2026-08-16,8:00 AM,Breakfast,"Oatmeal, Rolled Oats, Dry",1.00 cup,Cereal Grains and Pasta
+2026-08-16,8:05 AM,Breakfast,=cmd|'/c calc'!A1,1.00 serving,Snacks
+2026-08-16,8:06 AM,Breakfast,+1-800-555-0100,1.00 serving,Snacks
+2026-08-16,8:07 AM,Breakfast,-2+3+cmd|'/c calc'!A1,1.00 serving,Snacks
+2026-08-16,8:08 AM,Breakfast,@SUM(1+9)*cmd|'/c calc'!A1,1.00 serving,Snacks
+2026-08-16,12:30 PM,Lunch,"Ben & Jerry's ""Half Baked"", pint",0.50 pint,Snacks
+2026-08-16,12:35 PM,Lunch,🥗 Salad Bowl 🍣,1.00 bowl,"Meals, Entrees, and Sidedishes"
+2026-08-16,1:00 PM,Lunch,Ragged Row Too Few Fields,1.00 serving
+2026-08-16,1:05 PM,Lunch,Ragged Row Too Many Fields,1.00 serving,Snacks,extra,fields
+2026-13-45,2:00 PM,Snacks,Impossible Date Food,1.00 serving,Snacks
+08/16/2026,2:05 PM,Snacks,Slash Date Food,1.00 serving,Snacks
+,2:10 PM,Snacks,Empty Day Food,1.00 serving,Snacks
+2026-08-16,25:99 XM,Snacks,Impossible Time Food,1.00 serving,Snacks
+2026-08-16,3:00 PM,Second Breakfast,Custom Group Food,1.00 serving,Snacks
+2026-08-16,3:05 PM,Snacks,Amount With No Unit,1.00,Snacks
+2026-08-16,3:10 PM,Snacks,Amount With No Number,two bagels,Snacks
+2026-08-16,3:15 PM,Snacks,Amount Empty,,Snacks
+2026-08-16,7:30 PM,Dinner,"Food Name With
+An Embedded Newline",1.00 serving,Snacks
+2026-08-16,8:00 PM,Dinner,Valid Row After The Broken Ones,1.00 serving,Snacks
+2026-08-16,9:00 PM,Dinner,"Unterminated Quote Food,1.00 serving,Snacks

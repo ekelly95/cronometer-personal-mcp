@@ -1,0 +1,6 @@
+Name,Start,End,Recurrence,Comments
+Overnight fast,2026-08-16 20:00:00,2026-08-17 12:00:00,Daily,Normal
+Backwards fast,2026-08-16 20:00:00,2026-08-16 08:00:00,None,End precedes start
+In progress fast,2026-08-17 20:00:00,,None,No end recorded
+Bad start fast,not a timestamp,2026-08-17 12:00:00,None,Unparseable start
+Ragged fast,2026-08-18 20:00:00,2026-08-19 12:00:00

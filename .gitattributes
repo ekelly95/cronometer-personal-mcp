@@ -1,0 +1,13 @@
+# This machine has core.autocrlf=true, so without these rules a fresh clone on
+# Windows would check the fixtures out with CRLF endings — which DATA_MODEL.md
+# forbids and test/fixtures.test.ts asserts against. Pin LF everywhere.
+* text=auto eol=lf
+
+# Named explicitly so the invariant survives someone relaxing the rule above.
+test/fixtures/**/*.csv text eol=lf
+
+# The same rule, for a different reason that is easy to miss: a shell script checked
+# out with CRLF fails on macOS with "bad interpreter", because the carriage return
+# becomes part of the interpreter path. These are authored on Windows, so this is not
+# hypothetical.
+scripts/*.sh text eol=lf
